@@ -3,7 +3,7 @@ import { getPopularService } from "../../service/recipes.service";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import Card from "../../ui/Card";
-import { useCart } from "../../CartContext";
+import { useCart } from "../../Context/CartContext";
 
 const Paste = () => {
   const localstorageKey = "paste";

@@ -5,7 +5,7 @@ import Card from "../../ui/Card";
 import _ from "lodash";
 import { Link, useParams } from "react-router-dom";
 import { getCousineComplexSearch } from "../../service/recipes.service";
-import { useCart } from "../../CartContext";
+import { useCart } from "../../Context/CartContext";
 
 const Searched = () => {
   const { searchValue } = useParams();

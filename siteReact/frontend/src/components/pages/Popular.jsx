@@ -3,13 +3,11 @@ import { getPopularService } from "../../service/recipes.service";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import Card from "../../ui/Card";
-import { useCart } from "../../CartContext";
+import { useCart } from "../../Context/CartContext";
 
 const Popular = () => {
-  const localstorageKey = "popular";
   const [popular, setPopular] = useState([]);
   const [cartStatus, setCartStatus] = useState({});
-  const [animazione, setAnimazione] = useState(false);
   const { addToCart, cart } = useCart();
 
   useEffect(() => {
@@ -22,16 +20,10 @@ const Popular = () => {
   };
 
   const getPopular = async () => {
-    const localstore = localStorage.getItem(localstorageKey);
-    if (localstore) {
-      setPopular(JSON.parse(localstore));
-    } else {
       const data = await getPopularService(5, "vegetarian");
       if (data && data.recipes) {
-        localStorage.setItem(localstorageKey, JSON.stringify(data.recipes));
         setPopular(data.recipes);
       }
-    }
   };
   return (
     <>

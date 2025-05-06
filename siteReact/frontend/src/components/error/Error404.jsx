@@ -10,7 +10,7 @@ const Error404 = () => {
         La pagina che stai cercando non esiste o è stata spostata.
       </p>
       <Link
-        to="/"
+        to="/home"
         className="mt-6 px-6 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition"
       >
         Torna alla Home

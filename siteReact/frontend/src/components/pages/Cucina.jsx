@@ -5,7 +5,7 @@ import styled from "styled-components";
 import _ from "lodash";
 import Loader from "../../ui/Loader";
 import Card from "../../ui/Card";
-import { useCart } from "../../CartContext";
+import { useCart } from "../../Context/CartContext";
 import { motion } from "framer-motion";
 
 const Cucina = () => {

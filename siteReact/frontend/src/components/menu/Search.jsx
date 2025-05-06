@@ -55,7 +55,7 @@ const FormStyle = styled.form`
     border: 2px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
-    color: #333;
+    color: black;
     background-color: #fff;
     transition: border-color 0.3s, background-color 0.3s;
 
@@ -75,7 +75,7 @@ const FormStyle = styled.form`
     margin-top: 16px;
     font-size: 16px;
     background-color: #5b8c5a;
-    color: white;
+    color: black;
     border: none;
     border-radius: 6px;
     cursor: pointer;

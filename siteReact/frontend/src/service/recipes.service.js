@@ -3,17 +3,19 @@ import {
   recipesUrlSearch,
   recipesUrlInformation,
   recipesUrlPrice,
+  generateUrlBackend,
+  loginUrl,
 } from "./url";
-import { generateUrl } from "./url";
-import { getService } from "./http.service";
+import { generateUrlApi, registerUrl } from "./url";
+import { getService,postUserData } from "./http.service";
 
 const getRecipesInformation = async (id) => {
-  const url = generateUrl(recipesUrlInformation(id));
+  const url = generateUrlApi(recipesUrlInformation(id));
   return getService(url);
 };
 
 const getRecipesPrice = async (id) => {
-  const url = generateUrl(recipesUrlPrice(id));
+  const url = generateUrlApi(recipesUrlPrice(id));
   return getService(url);
 };
 
@@ -23,7 +25,7 @@ const getPopularService = async (n, tags) => {
     { key: "tags", value: tags },
   ];
 
-  const url = generateUrl(recipesUrl, params);
+  const url = generateUrlApi(recipesUrl, params);
   return getService(url);
 };
 
@@ -33,8 +35,18 @@ const getCousineComplexSearch = async (n, cuisine, query = "") => {
     { key: "cuisine", value: cuisine },
     { key: "query", value: query },
   ];
-  const url = generateUrl(recipesUrlSearch, params);
+  const url = generateUrlApi(recipesUrlSearch, params);
   return getService(url);
+};
+
+const register = async (username, password) => {
+  const url = generateUrlBackend(registerUrl);
+  return postUserData(url, username, password);
+};
+
+const login = async (username, password, remember) => {
+  const url = generateUrlBackend(loginUrl);
+  return postUserData(url, username, password, remember);
 };
 
 export {
@@ -42,4 +54,6 @@ export {
   getCousineComplexSearch,
   getRecipesInformation,
   getRecipesPrice,
+  register,
+  login
 };

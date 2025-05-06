@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 const Category = () => {
   return (
     <List>
-      <Slink to={"/"}>
+      <Slink to={"/home"}>
         <CiHome />
         <h4>Home</h4>
       </Slink>
@@ -56,7 +56,7 @@ const Slink = styled(NavLink)`
     rgba(94, 218, 133, 1) 0%,
     rgba(178, 237, 83, 1) 64%
   );
-  color: white;
+  color: black;
   text-align: center;
 
   svg {

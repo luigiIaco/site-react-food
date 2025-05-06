@@ -1,11 +1,17 @@
+//Url globali
 const SERVER_URL = "https://api.spoonacular.com";
+const BACKEND_URL = "http://localhost:3000";
+
 
 const recipesUrl = "/recipes/random";
 const recipesUrlSearch = "/recipes/complexSearch";
 const recipesUrlInformation = (id) => `/recipes/${id}/information`;
 const recipesUrlPrice = (id) => `/recipes/${id}/priceBreakdownWidget.json`;
 
-const generateUrl = (url, params = []) => {
+const registerUrl = "/auth/register";
+const loginUrl = "/auth/login";
+
+const generateUrlApi = (url, params = []) => {
   const urlServerWithAuth = `${SERVER_URL}${url}?apiKey=${process.env.REACT_APP_API_KEY}`;
   if (params && params.length > 0) {
     let paramsUrl = new URLSearchParams();
@@ -19,10 +25,18 @@ const generateUrl = (url, params = []) => {
   return urlServerWithAuth;
 };
 
+const generateUrlBackend = (url, params = []) => {
+  const urlBackend = `${BACKEND_URL}${url}`;
+  return urlBackend;
+};
+
 export {
   recipesUrl,
   recipesUrlSearch,
-  generateUrl,
+  registerUrl,
+  loginUrl,
+  generateUrlApi,
   recipesUrlInformation,
   recipesUrlPrice,
+  generateUrlBackend
 };

@@ -1,10 +1,14 @@
-import { useCart } from "../../CartContext";
+import { Link } from "react-router-dom";
+import { useCart } from "../../Context/CartContext";
 import React from "react";
+import { FaArrowRightLong } from "react-icons/fa6";
+import styled from "styled-components";
 
 export default function Cart() {
   const { cart, removeFromCart, total } = useCart();
 
   return (
+    <>
     <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-2xl shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
         🛒 Il tuo Carrello
@@ -37,5 +41,20 @@ export default function Cart() {
         </p>
       </div>
     </div>
+    <RedirectWrapper>
+    <Link to={"/home"}>Torna ai prodotti</Link> <FaArrowRightLong />
+    </RedirectWrapper>
+    </>
   );
 }
+
+const RedirectWrapper = styled.div`
+  display:flex;
+  justify-content:center;
+  margin-top:15px;
+
+  svg {
+  margin-top:4px;
+  margin-left:6px;
+  }
+`;
