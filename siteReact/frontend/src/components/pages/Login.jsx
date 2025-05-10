@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { login } from "../../service/recipes.service";
+import { login } from "../../service/users/users.service";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 
@@ -21,7 +21,7 @@ const Form = () => {
     }
   }, []);
 
-  const { message, from } = location.state || {};
+  const { message } = location.state || {};
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -45,6 +45,7 @@ const Form = () => {
       setLoading(true);
       const results = await login(formData.username, formData.password);
       localStorage.setItem("authToken", results.data);
+      localStorage.setItem("user", JSON.stringify(results.user));
   
       if (formData.remember) {
         Cookies.set(
@@ -101,7 +102,7 @@ const Form = () => {
             />{" "}
             Ricordami
           </label>
-          <Link to={"/"} style={{ float: "right" }}>
+          <Link to={"/forgotPassword"} style={{ float: "right" }}>
             Forgot password?
           </Link>
         </div>
@@ -144,7 +145,6 @@ const Wrapper = styled.div`
   .login-form h2 {
     text-align: center;
     margin-bottom:6px;
-    color: #333;
   }
 
   .login-form input[type="text"],

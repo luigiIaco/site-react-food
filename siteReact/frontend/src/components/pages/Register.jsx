@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { register } from "../../service/recipes.service";
+import { register } from "../../service/users/users.service";
 import { Link } from "react-router-dom";
 
 const Register = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState(""); // Nuovo stato
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Gestore per il submit del form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -18,7 +18,7 @@ const Register = () => {
     setSuccess(false);
 
     try {
-      await register(username, password);
+      await register(username, password, email); // Invia anche email
       setSuccess(true);
       setLoading(false);
     } catch (e) {
@@ -30,21 +30,16 @@ const Register = () => {
   return (
     <Wrapper>
       <FormContainer>
-        <h2 style={{ textAlign: "center" }}>Sign up</h2>
-
-        {/* Mostra il messaggio di successo */}
+        <h2 style={{ textAlign: "center", marginBottom: "6px" }}>Sign up</h2>
         {success && (
           <SuccessMessage>
             Registrazione completata con successo!
           </SuccessMessage>
         )}
-
-        {/* Mostra eventuali errori */}
         {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <form onSubmit={handleSubmit}>
           <FormGroup>
-            <Label htmlFor="username">Username</Label>
             <Input
               type="text"
               placeholder="Username"
@@ -56,7 +51,17 @@ const Register = () => {
           </FormGroup>
 
           <FormGroup>
-            <Label htmlFor="password">Password</Label>
+            <Input
+              type="email"
+              placeholder="Email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </FormGroup>
+
+          <FormGroup>
             <Input
               type="password"
               placeholder="Password"
@@ -70,9 +75,10 @@ const Register = () => {
           <SubmitButton type="submit" disabled={loading}>
             {loading ? "Registrazione in corso..." : "Registrati"}
           </SubmitButton>
+
           <LoginLinkContainer>
-  Hai già un account? <Link to="/login">Accedi</Link>
-</LoginLinkContainer>
+            Hai già un account? <Link to="/login">Accedi</Link>
+          </LoginLinkContainer>
         </form>
       </FormContainer>
     </Wrapper>
@@ -96,13 +102,9 @@ const FormContainer = styled.div`
   -webkit-backdrop-filter: blur(12px); /* Per Safari */
   padding: 32px;
   border-radius: 16px;
-  box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.2),
-    0 4px 12px rgba(0, 0, 0, 0.1); /* Ombra "a doppio livello" */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombra "a doppio livello" */
   font-family: "Segoe UI", sans-serif;
 `;
-
-
 
 const SuccessMessage = styled.div`
   padding: 10px;
@@ -124,13 +126,6 @@ const ErrorMessage = styled.div`
 
 const FormGroup = styled.div`
   margin-bottom: 16px;
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #333;
 `;
 
 const Input = styled.input`

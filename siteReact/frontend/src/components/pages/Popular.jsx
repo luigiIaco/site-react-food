@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getPopularService } from "../../service/recipes.service";
+import { getPopularService } from "../../service/recipes/recipes.service";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import Card from "../../ui/Card";
-import { useCart } from "../../Context/CartContext";
 
 const Popular = () => {
   const [popular, setPopular] = useState([]);
   const [cartStatus, setCartStatus] = useState({});
-  const { addToCart, cart } = useCart();
 
   useEffect(() => {
     getPopular();
@@ -20,10 +18,10 @@ const Popular = () => {
   };
 
   const getPopular = async () => {
-      const data = await getPopularService(5, "vegetarian");
-      if (data && data.recipes) {
-        setPopular(data.recipes);
-      }
+    const data = await getPopularService(5, "vegetarian");
+    if (data && data.recipes) {
+      setPopular(data.recipes);
+    }
   };
   return (
     <>
@@ -43,7 +41,6 @@ const Popular = () => {
                 <Card
                   key={item.id}
                   item={item}
-                  addToCart={addToCart}
                   generaPrezzo={generaPrezzo}
                   cartStatus={cartStatus}
                   setCartStatus={setCartStatus}

@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getCousineComplexSearch } from "../../service/recipes.service";
+import { useParams } from "react-router-dom";
+import { getCousineComplexSearch } from "../../service/recipes/recipes.service";
 import styled from "styled-components";
 import _ from "lodash";
 import Loader from "../../ui/Loader";
 import Card from "../../ui/Card";
-import { useCart } from "../../Context/CartContext";
-import { motion } from "framer-motion";
 
 const Cucina = () => {
   const { type } = useParams();
   const [cucina, setCucina] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { addToCart, cart } = useCart();
   const [cartStatus, setCartStatus] = useState({});
-  const [animazione, setAnimazione] = useState(false);
 
   useEffect(() => {
     const getCucina = async () => {
@@ -45,7 +41,6 @@ const Cucina = () => {
             <Card
               key={item.id}
               item={item}
-              addToCart={addToCart}
               generaPrezzo={generaPrezzo}
               cartStatus={cartStatus}
               setCartStatus={setCartStatus}

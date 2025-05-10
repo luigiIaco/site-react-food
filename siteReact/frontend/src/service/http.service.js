@@ -1,14 +1,14 @@
-const postUserData = async (url, username, password, remember) => {
+const postService = async (url, data) => {
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password, remember}),
+    body: JSON.stringify({ data }),
   });
 
   if (response.ok) {
-    const data = await response.json(); 
+    const data = await response.json();
     return data;
   } else {
     const errorData = await response.json();
@@ -22,4 +22,4 @@ const getService = async (url) => {
   return data;
 };
 
-export { getService, postUserData};
+export { getService, postService };

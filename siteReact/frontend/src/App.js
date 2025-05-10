@@ -3,7 +3,7 @@ import {
   Route,
   Routes,
   useLocation,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 import Home from "./components/pages/Home";
 import "@splidejs/react-splide/css";
@@ -14,27 +14,71 @@ import React from "react";
 import Searched from "./components/pages/Searched";
 import Details from "./components/pages/Details";
 import Cart from "./components/pages/Cart";
-import { CartProvider } from "./Context/CartContext";
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import ForgotPassword from "./components/pages/ForgotPassword";
+import ResetPassword from "./components/pages/ResetPassword";
 
 function App() {
   const location = useLocation();
-  const showMenu = location.pathname !== "/404" && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/cart";
+  const showMenu =
+    location.pathname !== "/404" &&
+    location.pathname !== "/login" &&
+    location.pathname !== "/register" &&
+    location.pathname !== "/cart" &&
+    location.pathname !== "/forgotPassword" &&
+    location.pathname !== "/resetPassword";
 
   return (
     <>
       {showMenu && <Menu />}
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/cucina/:type" element={<ProtectedRoute><Cucina /></ProtectedRoute>} />
-        <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-        <Route path="/search/:searchValue" element={<ProtectedRoute><Searched /></ProtectedRoute>} />
-        <Route path="/detail/:id" element={<ProtectedRoute><Details /></ProtectedRoute>} />
+        <Route
+          path="/cucina/:type"
+          element={
+            <ProtectedRoute>
+              <Cucina />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/search/:searchValue"
+          element={
+            <ProtectedRoute>
+              <Searched />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/detail/:id"
+          element={
+            <ProtectedRoute>
+              <Details />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/404" replace />} />
         <Route path="/404" element={<Error404 />} />
       </Routes>
@@ -44,10 +88,8 @@ function App() {
 
 export default function AppRoutes() {
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </CartProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   );
 }

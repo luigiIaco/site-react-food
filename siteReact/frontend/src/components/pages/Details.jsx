@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getRecipesInformation } from "../../service/recipes.service";
+import { getRecipesInformation } from "../../service/recipes/recipes.service";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import Loader from "../../ui/Loader";

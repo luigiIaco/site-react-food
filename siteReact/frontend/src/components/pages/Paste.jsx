@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { getPopularService } from "../../service/recipes.service";
+import { getPopularService } from "../../service/recipes/recipes.service";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import Card from "../../ui/Card";
-import { useCart } from "../../Context/CartContext";
 
 const Paste = () => {
   const localstorageKey = "paste";
   const [paste, setPaste] = useState([]);
   const [cartStatus, setCartStatus] = useState({});
-  const [animazione, setAnimazione] = useState(false);
-  const { addToCart, cart } = useCart();
 
   useEffect(() => {
     getPaste();
@@ -48,7 +45,6 @@ const Paste = () => {
               <Card
                 key={item.id}
                 item={item}
-                addToCart={addToCart}
                 generaPrezzo={generaPrezzo}
                 cartStatus={cartStatus}
                 setCartStatus={setCartStatus}

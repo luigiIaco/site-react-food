@@ -2,14 +2,22 @@
 const SERVER_URL = "https://api.spoonacular.com";
 const BACKEND_URL = "http://localhost:3000";
 
-
+//recipesUrl
 const recipesUrl = "/recipes/random";
 const recipesUrlSearch = "/recipes/complexSearch";
 const recipesUrlInformation = (id) => `/recipes/${id}/information`;
 const recipesUrlPrice = (id) => `/recipes/${id}/priceBreakdownWidget.json`;
 
+//auth url
+const recoverPassUrl = "/auth/recoverPassword";
+const resetPassUrl = "/auth/resetPassword";
 const registerUrl = "/auth/register";
 const loginUrl = "/auth/login";
+
+//product Url
+const addCartUrl = "/product/insertCartProduct";
+const getCartUrl = "/product/getCartProduct";
+const removeFromCartUrl = "/product/removeCartProduct";
 
 const generateUrlApi = (url, params = []) => {
   const urlServerWithAuth = `${SERVER_URL}${url}?apiKey=${process.env.REACT_APP_API_KEY}`;
@@ -35,8 +43,13 @@ export {
   recipesUrlSearch,
   registerUrl,
   loginUrl,
+  recoverPassUrl,
+  resetPassUrl,
+  addCartUrl,
+  getCartUrl,
+  removeFromCartUrl,
   generateUrlApi,
   recipesUrlInformation,
   recipesUrlPrice,
-  generateUrlBackend
+  generateUrlBackend,
 };

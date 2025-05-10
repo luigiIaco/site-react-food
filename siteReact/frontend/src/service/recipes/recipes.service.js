@@ -3,11 +3,13 @@ import {
   recipesUrlSearch,
   recipesUrlInformation,
   recipesUrlPrice,
+  generateUrlApi,
   generateUrlBackend,
-  loginUrl,
-} from "./url";
-import { generateUrlApi, registerUrl } from "./url";
-import { getService,postUserData } from "./http.service";
+  addCartUrl,
+  getCartUrl,
+  removeFromCartUrl,
+} from "../url";
+import { getService, postService } from "../http.service";
 
 const getRecipesInformation = async (id) => {
   const url = generateUrlApi(recipesUrlInformation(id));
@@ -39,14 +41,19 @@ const getCousineComplexSearch = async (n, cuisine, query = "") => {
   return getService(url);
 };
 
-const register = async (username, password) => {
-  const url = generateUrlBackend(registerUrl);
-  return postUserData(url, username, password);
+const addToCart = async (data) => {
+  const url = generateUrlBackend(addCartUrl);
+  return postService(url, data);
 };
 
-const login = async (username, password, remember) => {
-  const url = generateUrlBackend(loginUrl);
-  return postUserData(url, username, password, remember);
+const getFromCart = async (username) => {
+  const url = generateUrlBackend(getCartUrl);
+  return postService(url, username);
+};
+
+const removeFromCart = async (data) => {
+  const url = generateUrlBackend(removeFromCartUrl);
+  return postService(url, data);
 };
 
 export {
@@ -54,6 +61,7 @@ export {
   getCousineComplexSearch,
   getRecipesInformation,
   getRecipesPrice,
-  register,
-  login
+  addToCart,
+  getFromCart,
+  removeFromCart,
 };

@@ -3,17 +3,14 @@ import Loader from "../../ui/Loader";
 import styled from "styled-components";
 import Card from "../../ui/Card";
 import _ from "lodash";
-import { Link, useParams } from "react-router-dom";
-import { getCousineComplexSearch } from "../../service/recipes.service";
-import { useCart } from "../../Context/CartContext";
+import { useParams } from "react-router-dom";
+import { getCousineComplexSearch } from "../../service/recipes/recipes.service";
 
 const Searched = () => {
   const { searchValue } = useParams();
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [cartStatus, setCartStatus] = useState({});
-  const [animazione, setAnimazione] = useState(false);
-  const { addToCart, cart } = useCart();
 
   useEffect(() => {
     const getSearch = async () => {
@@ -45,7 +42,6 @@ const Searched = () => {
               <Card
                 key={item.id}
                 item={item}
-                addToCart={addToCart}
                 generaPrezzo={generaPrezzo}
                 cartStatus={cartStatus}
                 setCartStatus={setCartStatus}
