@@ -22,4 +22,22 @@ const getService = async (url) => {
   return data;
 };
 
-export { getService, postService };
+const putService = async (url, data) => {
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ data }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Qualcosa è andato storto");
+  }
+};
+
+export { getService, postService, putService };

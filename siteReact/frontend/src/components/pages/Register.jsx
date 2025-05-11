@@ -97,7 +97,7 @@ const Wrapper = styled.div`
 const FormContainer = styled.div`
   width: 100%;
   max-width: 400px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px); /* Per Safari */
   padding: 32px;

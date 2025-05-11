@@ -17,32 +17,35 @@ const Menu = () => {
   const username = JSON.parse(localStorage.getItem("user"))?.username || "utente";
 
   return (
-    <>
-      <WrapperButton>
-        <IconButton as="button" onClick={() => setShowDialog(true)} title="Profilo">
-          <FaUserCircle />
-        </IconButton>
-        <IconButton as={Link} to="/cart" title="Vai al carrello">
-          <MdShoppingCartCheckout />
-        </IconButton>
-        <IconButton as="button" onClick={handleLogout} title="Logout">
-          <MdLogout />
-        </IconButton>
-      </WrapperButton>
+  <>
+    <WrapperButton>
+      <IconButton as="button" onClick={() => setShowDialog(true)} title="Profilo">
+        <FaUserCircle />
+      </IconButton>
+      <IconButton as={Link} to="/cart" title="Vai al carrello">
+        <MdShoppingCartCheckout />
+      </IconButton>
+      <IconButton as="button" onClick={handleLogout} title="Logout">
+        <MdLogout />
+      </IconButton>
+    </WrapperButton>
 
-      {showDialog && (
-        <Overlay onClick={() => setShowDialog(false)}>
-          <DialogBox onClick={(e) => e.stopPropagation()}>
-            <p>Sei autenticato come <strong>{username}</strong></p>
-            <CloseButton onClick={() => setShowDialog(false)}>Chiudi</CloseButton>
-          </DialogBox>
-        </Overlay>
-      )}
-
+    {showDialog && (
+      <Overlay onClick={() => setShowDialog(false)}>
+        <DialogBox onClick={(e) => e.stopPropagation()}>
+          <p>Sei autenticato come <strong>{username}</strong></p>
+          <CloseButton onClick={() => setShowDialog(false)}>Chiudi</CloseButton>
+        </DialogBox>
+      </Overlay>
+    )}   
       <Search />
+    <SectionWrapper>
+      <SectionTitle>📚 Categorie</SectionTitle>
       <Category />
-    </>
-  );
+    </SectionWrapper>
+  </>
+);
+
 };
 
 
@@ -114,6 +117,23 @@ const CloseButton = styled.button`
   &:hover {
     background-color: #111827;
   }
+`;
+
+const SectionWrapper = styled.div`
+  background-color: #f9fafb;
+  margin: 24px auto;
+  padding: 10px;
+  border-radius: 12px;
+  max-width: 800px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+`;
+
+const SectionTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+  text-align:center;
 `;
 
 

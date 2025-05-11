@@ -10,9 +10,14 @@ const Search = () => {
     event.preventDefault();
     navigate(`/search/${search}`);
   };
+
+
   return (
     <>
       <FormStyle onSubmit={handleSubmit}>
+        <Title>
+        <h3>🔍 Cerca Prodotto</h3>
+        </Title>
         <input
           type="text"
           value={search}
@@ -91,5 +96,12 @@ const FormStyle = styled.form`
     }
   }
 `;
+
+const Title = styled.div`
+ font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+`
 
 export default Search;

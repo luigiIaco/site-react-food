@@ -1,4 +1,4 @@
-import { postService } from "../http.service";
+import { postService, putService } from "../http.service";
 import {
   generateUrlBackend,
   loginUrl,
@@ -32,7 +32,7 @@ const recoveryPasswordByEmail = async (email) => {
 
 const resetPassword = async (data) => {
   const url = generateUrlBackend(resetPassUrl);
-  return postService(url, data);
+  return putService(url, data);
 };
 
 export { register, login, recoveryPasswordByEmail, resetPassword };
