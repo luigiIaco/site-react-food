@@ -1,7 +1,6 @@
 import { Cart } from "../models/cart.js";
-import mongoose from "mongoose";
 
-export const setProductsCart = async (req, res) => {
+export const setCart = async (req, res) => {
   const { data } = req.body;
   const { username, product, amount, price } = data;
   var cart = await Cart.findOne({ username });
@@ -30,7 +29,7 @@ export const setProductsCart = async (req, res) => {
   res.status(200).json({ status: "ok", message: "Aggiunto al carrello" });
 };
 
-export const getProductsCart = async (req, res) => {
+export const getCart = async (req, res) => {
   const username = req.body.data;
   var cart = await Cart.findOne({ username });
   if (!cart) {
@@ -42,12 +41,13 @@ export const getProductsCart = async (req, res) => {
   }
 };
 
-export const removeProductCart = async (req, res) => {
+export const removeCartById = async (req, res) => {
+  const {id} = req.params;
   const { data } = req.body;
-  const { cartId, productId, quantityToRemove } = data;
+  const { cartId, quantityToRemove } = data;
   const cart = await Cart.findById({ _id: cartId });
   let removedItem = cart.products.find(
-    (item) => item._id.toString() === productId
+    (item) => item._id.toString() === id
   );
 
   if (!removedItem) return res.status(404).json({ message: "Prodotto non trovato nel carrello" });
@@ -56,10 +56,21 @@ export const removeProductCart = async (req, res) => {
   // Rimuovi l'oggetto se la quantità scende a 0 o meno
   if (removedItem.amount <= 0) {
     cart.products = cart.products.filter(
-      (item) => item._id.toString() !== productId
+      (item) => item._id.toString() !== id
     );
   }
 
   await cart.save();
   res.status(200).json({ message: "Prodotto aggiornato correttamente", cart });
+};
+
+export const removeAllCart = async (req, res) => {
+  const { data } = req.body;
+  const {username} = data;
+  const cart = await Cart.findOne({ username: username });
+  if (!cart) return res.status(404).json({ message: "Carrello non trovato" });
+  cart.products = [];
+
+  await cart.save();
+  res.status(200).json({ message: "Carrello svuotato" });
 };

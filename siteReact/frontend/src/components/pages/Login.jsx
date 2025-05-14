@@ -4,10 +4,14 @@ import styled from "styled-components";
 import { login } from "../../service/users/users.service";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Form = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   useEffect(() => {
     const raw = Cookies.get("rememberCredential");
@@ -28,25 +32,32 @@ const Form = () => {
     remember: false,
   });
 
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!captchaToken) {
+      setError("Completa il reCAPTCHA per continuare.");
+      return;
+    }
+
     try {
       setLoading(true);
       const results = await login(formData.username, formData.password);
       localStorage.setItem("authToken", results.data);
       localStorage.setItem("user", JSON.stringify(results.user));
-  
+
       if (formData.remember) {
         Cookies.set(
           "rememberCredential",
@@ -59,63 +70,70 @@ const Form = () => {
       } else {
         Cookies.remove("rememberCredential");
       }
-  
+
       setLoading(false);
-      navigate("/home"); // ✅ redirezione al successo
+      navigate("/home");
     } catch (e) {
       setError(e.message);
       setLoading(false);
     }
   };
-  
 
   return (
     <>
-    <Wrapper>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Sign in</h2>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        {message && <AuthMessage>{message}</AuthMessage>}
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <div className="checkbox-group mb-2">
-          <label>
-            <input
-              type="checkbox"
-              name="remember"
-              checked={formData.remember}
-              onChange={handleChange}
-            />{" "}
-            Ricordami
-          </label>
-          <Link to={"/forgotPassword"} style={{ float: "right" }}>
-            Forgot password?
-          </Link>
-        </div>
-        <SubmitButton type="submit" disabled={loading}>
+      <Wrapper>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <h2>Sign in</h2>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          {message && <AuthMessage>{message}</AuthMessage>}
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <div className="checkbox-group mb-2">
+            <label>
+              <input
+                type="checkbox"
+                name="remember"
+                checked={formData.remember}
+                onChange={handleChange}
+              />{" "}
+              Ricordami
+            </label>
+            <Link to={"/forgotPassword"} style={{ float: "right" }}>
+              Forgot password?
+            </Link>
+          </div>
+
+          <div style={{ marginBottom: "16px" }}>
+            <ReCAPTCHA
+              sitekey="6LfLHTYrAAAAAOFT32kF7AFYHKXsX_8j8hqmqYKk"
+              onChange={handleCaptchaChange}
+            />
+          </div>
+
+          <SubmitButton type="submit" disabled={loading}>
             {loading ? "Accesso in corso..." : "Accedi"}
           </SubmitButton>
-        <div className="footer">
-          <p>
-            Non hai un account? <Link to={"/register"}>Registrati</Link>
-          </p>
-        </div>
-      </form>
-    </Wrapper>
+          <div className="footer">
+            <p>
+              Non hai un account? <Link to={"/register"}>Registrati</Link>
+            </p>
+          </div>
+        </form>
+      </Wrapper>
     </>
   );
 };
@@ -130,21 +148,19 @@ const Wrapper = styled.div`
 
   .login-form {
     width: 100%;
-  max-width: 400px;
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* Per Safari */
-  padding: 32px;
-  border-radius: 16px;
-  box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.2),
-    0 4px 12px rgba(0, 0, 0, 0.1); /* Ombra "a doppio livello" */
-  font-family: "Segoe UI", sans-serif;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* Per Safari */
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombra "a doppio livello" */
+    font-family: "Segoe UI", sans-serif;
   }
 
   .login-form h2 {
     text-align: center;
-    margin-bottom:6px;
+    margin-bottom: 6px;
   }
 
   .login-form input[type="text"],
@@ -214,7 +230,7 @@ const ErrorMessage = styled.div`
 const AuthMessage = styled.div`
   padding: 10px;
   margin-bottom: 10px;
-  background-color:rgb(195, 220, 53);
+  background-color: rgb(195, 220, 53);
   color: white;
   border-radius: 5px;
   text-align: center;

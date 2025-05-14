@@ -8,8 +8,9 @@ import {
   addCartUrl,
   getCartUrl,
   removeFromCartUrl,
+  removeAllCartUrl,
 } from "../url";
-import { getService, postService } from "../http.service";
+import { deleteService, getService, postService } from "../http.service";
 
 const getRecipesInformation = async (id) => {
   const url = generateUrlApi(recipesUrlInformation(id));
@@ -41,19 +42,24 @@ const getCousineComplexSearch = async (n, cuisine, query = "") => {
   return getService(url);
 };
 
-const addToCart = async (data) => {
+const addCart = async (data) => {
   const url = generateUrlBackend(addCartUrl);
   return postService(url, data);
 };
 
-const getFromCart = async (username) => {
+const getCart = async (username) => {
   const url = generateUrlBackend(getCartUrl);
   return postService(url, username);
 };
 
-const removeFromCart = async (data) => {
-  const url = generateUrlBackend(removeFromCartUrl);
-  return postService(url, data);
+const removeCartById = async (data) => {
+  const url = generateUrlBackend(removeFromCartUrl(data.productId));
+  return deleteService(url, {cartId:data.cartId,quantityToRemove:data.quantityToRemove});
+};
+
+const removeAllCart = async (username) => {
+  const url = generateUrlBackend(removeAllCartUrl);
+  return deleteService(url, username);
 };
 
 export {
@@ -61,7 +67,8 @@ export {
   getCousineComplexSearch,
   getRecipesInformation,
   getRecipesPrice,
-  addToCart,
-  getFromCart,
-  removeFromCart,
+  addCart,
+  getCart,
+  removeCartById,
+  removeAllCart
 };

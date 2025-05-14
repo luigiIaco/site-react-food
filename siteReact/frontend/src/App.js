@@ -19,6 +19,7 @@ import Login from "./components/pages/Login";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import ResetPassword from "./components/pages/ResetPassword";
+import { CartProvider } from "./Context/CartContext";
 
 function App() {
   const location = useLocation();
@@ -88,8 +89,10 @@ function App() {
 
 export default function AppRoutes() {
   return (
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </CartProvider>
   );
 }

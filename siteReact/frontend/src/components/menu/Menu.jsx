@@ -5,49 +5,80 @@ import Search from "./Search";
 import { MdShoppingCartCheckout, MdLogout } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import styled from "styled-components";
+import { useContext } from "react";
+import { CartContext } from "../../Context/CartContext";
 
 const Menu = () => {
   const [showDialog, setShowDialog] = useState(false);
+  const { cartCount } = useContext(CartContext);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     window.location.href = "/login";
   };
 
-  const username = JSON.parse(localStorage.getItem("user"))?.username || "utente";
+  const username =
+    JSON.parse(localStorage.getItem("user"))?.username || "utente";
 
   return (
-  <>
-    <WrapperButton>
-      <IconButton as="button" onClick={() => setShowDialog(true)} title="Profilo">
-        <FaUserCircle />
-      </IconButton>
-      <IconButton as={Link} to="/cart" title="Vai al carrello">
-        <MdShoppingCartCheckout />
-      </IconButton>
-      <IconButton as="button" onClick={handleLogout} title="Logout">
-        <MdLogout />
-      </IconButton>
-    </WrapperButton>
+    <>
+      <WrapperButton>
+        <IconButton
+          as="button"
+          onClick={() => setShowDialog(true)}
+          title="Profilo"
+        >
+          <FaUserCircle />
+        </IconButton>
 
-    {showDialog && (
-      <Overlay onClick={() => setShowDialog(false)}>
-        <DialogBox onClick={(e) => e.stopPropagation()}>
-          <p>Sei autenticato come <strong>{username}</strong></p>
-          <CloseButton onClick={() => setShowDialog(false)}>Chiudi</CloseButton>
-        </DialogBox>
-      </Overlay>
-    )}   
+        <div style={{ position: "relative" }}>
+          {cartCount > 0 && (
+            <IconButton as={Link} to="/cart" title="Vai al carrello">
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-10px",
+                  right: "-10px",
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  padding: "2px 6px",
+                  fontSize: "12px",
+                }}
+              >
+                {cartCount}
+              </span>
+              <MdShoppingCartCheckout />
+            </IconButton>
+          )}
+
+          {cartCount === 0 && <IconButton as={Link} to="/cart" title="Vai al carrello"><MdShoppingCartCheckout /></IconButton>}
+        </div>
+        <IconButton as="button" onClick={handleLogout} title="Logout">
+          <MdLogout />
+        </IconButton>
+      </WrapperButton>
+
+      {showDialog && (
+        <Overlay onClick={() => setShowDialog(false)}>
+          <DialogBox onClick={(e) => e.stopPropagation()}>
+            <p>
+              Sei autenticato come <strong>{username}</strong>
+            </p>
+            <CloseButton onClick={() => setShowDialog(false)}>
+              Chiudi
+            </CloseButton>
+          </DialogBox>
+        </Overlay>
+      )}
       <Search />
-    <SectionWrapper>
-      <SectionTitle>📚 Categorie</SectionTitle>
-      <Category />
-    </SectionWrapper>
-  </>
-);
-
+      <SectionWrapper>
+        <SectionTitle>📚 Categorie</SectionTitle>
+        <Category />
+      </SectionWrapper>
+    </>
+  );
 };
-
 
 const WrapperButton = styled.div`
   position: absolute;
@@ -133,8 +164,7 @@ const SectionTitle = styled.h3`
   font-weight: 600;
   margin-bottom: 8px;
   color: #374151;
-  text-align:center;
+  text-align: center;
 `;
-
 
 export default Menu;

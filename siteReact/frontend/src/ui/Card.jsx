@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { BiDetail } from "react-icons/bi";
 import { FaCartPlus } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { addToCart } from "../service/recipes/recipes.service";
+import { addCart } from "../service/recipes/recipes.service";
+import { CartContext } from "../Context/CartContext";
 
 const Card = ({ item, generaPrezzo, cartStatus, setCartStatus }) => {
   const [amount, setAmount] = useState(1);
+  const { addItem } = useContext(CartContext);
 
   const handleAddToCart = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const username = user.username;
-    addToCart({
+    addItem(amount);
+    addCart({
       username,
       product: item.title,
       amount,

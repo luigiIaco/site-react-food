@@ -1,22 +1,27 @@
 // @ts-nocheck
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import styled from "styled-components";
 import {
-  getFromCart,
-  removeFromCart,
+  getCart,
+  removeCartById,
+  removeAllCart,
 } from "../../service/recipes/recipes.service";
 import { MdDelete } from "react-icons/md";
+import { CartContext } from "../../Context/CartContext";
 
 export default function Cart() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user.username;
   const [cart, setCart] = useState({});
   const [total, setTotal] = useState(0);
+  const { setCartCount } = useContext(CartContext);
 
-  const handleRemove = async (item) => {
+  const handleRemoveById = async (item) => {
     const quantityToRemove = item.toRemove || 1;
     try {
-      await removeFromCart({
+      await removeCartById({
         cartId: cart.data._id,
         productId: item._id,
         quantityToRemove,
@@ -27,11 +32,21 @@ export default function Cart() {
     }
   };
 
+  const handleRemoveAll = async () => {
+    try {
+      await removeAllCart({
+        username: username,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error("Errore durante la rimozione:", error);
+    }
+  };
+
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const username = user.username;
+    setCartCount(0);
     const getProductsCart = async () => {
-      const result = await getFromCart(username);
+      const result = await getCart(username);
       setCart(result);
     };
 
@@ -51,9 +66,17 @@ export default function Cart() {
   return (
     <>
       <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-2xl shadow-lg">
+        <HeaderCart>
         <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
           🛒 Il tuo Carrello
         </h2>
+        <button
+          className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 p-2 rounded shadow"
+          onClick={() => handleRemoveAll()}
+        >
+          Svuota carrello
+        </button>
+        </HeaderCart>
 
         {cart.data?.products?.length === 0 && (
           <p className="text-center text-gray-500">Il carrello è vuoto.</p>
@@ -82,7 +105,7 @@ export default function Cart() {
                 />
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 p-2 rounded shadow"
-                  onClick={() => handleRemove(item)}
+                  onClick={() => handleRemoveById(item)}
                 >
                   <MdDelete />
                 </button>
@@ -112,5 +135,15 @@ const RedirectWrapper = styled.div`
   svg {
     margin-top: 4px;
     margin-left: 6px;
-  }
+  }  
 `;
+
+const HeaderCart = styled.div`
+  display: flex;
+  justify-content: space-between;
+  button {
+  cursor:pointer;
+  position:relative;
+  bottom:7px;
+}
+`

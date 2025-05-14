@@ -15,9 +15,10 @@ const registerUrl = "/auth/register";
 const loginUrl = "/auth/login";
 
 //product Url
-const addCartUrl = "/product/insertCartProduct";
-const getCartUrl = "/product/getCartProduct";
-const removeFromCartUrl = "/product/removeCartProduct";
+const addCartUrl = "/product/insertCart";
+const getCartUrl = "/product/getCart";
+const removeAllCartUrl = "/product/removeAllCart";
+const removeFromCartUrl = (id) => `/product/removeCart/${id}`;
 
 const generateUrlApi = (url, params = []) => {
   const urlServerWithAuth = `${SERVER_URL}${url}?apiKey=${process.env.REACT_APP_API_KEY}`;
@@ -47,6 +48,7 @@ export {
   resetPassUrl,
   addCartUrl,
   getCartUrl,
+  removeAllCartUrl,
   removeFromCartUrl,
   generateUrlApi,
   recipesUrlInformation,
