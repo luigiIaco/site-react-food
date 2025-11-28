@@ -1,4 +1,5 @@
 import { User } from "../models/user.js";
+import { Cart } from "../models/cart.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
@@ -49,8 +50,14 @@ export const register = async (req, res) => {
     email: email,
   });
 
+  const cart = new Cart({
+    username: username,
+    products: [],
+  });
+
   try {
     await user.save();
+    await cart.save();
     res.status(201).json(user);
   } catch (error) {
     res.status(409).json({ status: "error", message: error.message });

@@ -5,12 +5,6 @@ export const setCart = async (req, res) => {
   const { username, product, amount, price } = data;
   var cart = await Cart.findOne({ username });
 
-  if (!cart) {
-    cart = new Cart({
-      username: username,
-      products: [{ product: product, price: price, amount: amount }],
-    });
-  } else {
     const existingProduct = cart.products.find(
       (obj) => obj.product === product
     );
@@ -23,7 +17,7 @@ export const setCart = async (req, res) => {
         amount: amount,
       });
     }
-  }
+  
   await cart.save();
 
   res.status(200).json({ status: "ok", message: "Aggiunto al carrello" });
