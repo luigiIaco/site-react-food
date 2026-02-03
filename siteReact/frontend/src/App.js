@@ -29,7 +29,9 @@ function App() {
     location.pathname !== "/register" &&
     location.pathname !== "/cart" &&
     location.pathname !== "/forgotPassword" &&
-    location.pathname !== "/resetPassword";
+    location.pathname !== "/resetPassword" &&
+    location.pathname !== "/home";
+
 
   return (
     <>
@@ -46,6 +48,7 @@ function App() {
         />
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/cucina" element={<Navigate to="/cucina/italian" replace />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/login" element={<Login />} />
         <Route

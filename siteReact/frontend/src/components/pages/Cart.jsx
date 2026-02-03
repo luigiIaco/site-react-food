@@ -121,7 +121,7 @@ export default function Cart() {
         </div>
       </div>
       <RedirectWrapper>
-        <Link to={"/home"}>Torna ai prodotti</Link> <FaArrowRightLong />
+        <Link to={"/cucina/italian"}>Torna ai prodotti</Link> <FaArrowRightLong />
       </RedirectWrapper>
     </>
   );
